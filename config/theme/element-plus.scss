@@ -1,0 +1,12 @@
+// Element Plus SCSS 主题变量覆盖（可选，深度定制用）
+//
+// 当前脚手架的主题采用 CSS 变量方式：见 config/theme/index.ts 的 applyTheme()，
+// 通过 --el-color-primary 等变量在运行时切换主色 / 暗色模式，多数场景无需改本文件。
+//
+// 如需更深度的组件级定制（覆盖 Element Plus 内部 SCSS 变量），按官方文档取消注释：
+//
+// @forward 'element-plus/theme-chalk/src/common/var.scss' with (
+//   $colors: (
+//     'primary': ('base': #1677ff),
+//   ),
+// );

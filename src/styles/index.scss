@@ -1,0 +1,33 @@
+@use './reset.scss';
+@use './variables.scss';
+
+// 通用滚动条
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--el-border-color);
+  border-radius: 3px;
+}
+
+// 侧边栏：去掉 el-menu 默认右边框硬线，改用柔和阴影分隔
+.el-aside {
+  box-shadow: 1px 1px 8px rgba(39, 38, 38, 0.808);
+  z-index: 1;
+}
+.el-menu {
+  border-right: none !important;
+}
+
+.tab-item {
+  border: 1px solid var(--el-border-color);
+  background: var(--el-fill-color-light);
+  color: var(--el-text-color-regular);
+
+  &.active {
+    background: var(--el-color-primary);
+    color: #fff;
+    border-color: var(--el-color-primary);
+  }
+}
