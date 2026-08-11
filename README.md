@@ -102,6 +102,7 @@ pnpm install
 pnpm dev          # 开发（内置 mock，无需后端）
 pnpm build        # 生产构建
 pnpm preview      # 预览构建产物
+pnpm lint         #
 ```
 
 默认登录账号：`admin` / `123456`（由 dev 内置 mock 提供）。
