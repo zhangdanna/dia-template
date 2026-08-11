@@ -20,6 +20,15 @@
     "test:watch": "vitest",
     "prepare": "husky"
   },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,js,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "src/**/*.{css,scss,md,json}": [
+      "prettier --write"
+    ]
+  },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
     "@vueuse/core": "^14.4.0",
@@ -34,9 +43,12 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",
+    "@commitlint/format": "^21.2.0",
     "@eslint/js": "^10.0.1",
     "@types/node": "^24.13.3",
     "@types/nprogress": "^0.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.66.0",
+    "@typescript-eslint/parser": "^8.66.0",
     "@unocss/vite": "^66.7.5",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vitest/coverage-v8": "^4.1.10",
@@ -46,6 +58,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-vue": "^10.10.0",
     "husky": "^9.1.7",
     "jsdom": "^30.0.1",
@@ -62,6 +75,7 @@
     "unplugin-auto-import": "^21.1.0",
     "unplugin-vue-components": "^32.1.0",
     "vite": "^8.2.0",
+    "vite-plugin-eslint": "^1.8.1",
     "vitest": "^4.1.10",
     "vue-eslint-parser": "^10.4.1",
     "vue-tsc": "^3.3.8"

@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import UnoCSS from '@unocss/vite'
+import eslint from 'vite-plugin-eslint'
 
 // 开发环境内置 mock：拦截 /api/* 返回假数据，无需后端即可登录体验
 function mockApiPlugin(): Plugin {
@@ -50,6 +51,7 @@ export default defineConfig(({ mode }) => {
   return {
     envDir,
     plugins: [
+      eslint(),
       vue(),
       UnoCSS(),
       AutoImport({
