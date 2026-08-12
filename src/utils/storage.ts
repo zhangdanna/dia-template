@@ -1,17 +1,17 @@
 export const storage = {
   get<T>(key: string, fallback: T): T {
-    const raw = localStorage.getItem(key)
-    if (raw === null) return fallback
+    const raw = localStorage.getItem(key);
+    if (raw === null) return fallback;
     try {
-      return JSON.parse(raw) as T
+      return JSON.parse(raw) as T;
     } catch {
-      return fallback
+      return fallback;
     }
   },
   set(key: string, value: unknown): void {
-    localStorage.setItem(key, JSON.stringify(value))
+    localStorage.setItem(key, JSON.stringify(value));
   },
   remove(key: string): void {
-    localStorage.removeItem(key)
+    localStorage.removeItem(key);
   },
-}
+};

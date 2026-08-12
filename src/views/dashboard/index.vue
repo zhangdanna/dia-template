@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/user';
 
-const user = useUserStore()
+defineOptions({ name: 'DashboardPage' });
+
+const user = useUserStore();
 const stats = [
   { label: '今日访问', value: '1,286', color: '#1677ff' },
   { label: '订单数', value: '328', color: '#52c41a' },
   { label: '待处理', value: '12', color: '#fa8c16' },
   { label: '异常', value: '3', color: '#f5222d' },
-]
+];
 </script>
 
 <template>

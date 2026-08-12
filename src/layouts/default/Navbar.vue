@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import { Expand, Fold, Moon, Sunny } from '@element-plus/icons-vue'
-import { ElMessageBox } from 'element-plus'
-import { useAppStore } from '@/stores/app'
-import { usePermissionStore } from '@/stores/permission'
-import { useUserStore } from '@/stores/user'
-import { resetRouter } from '@/router'
+import { useRoute, useRouter } from 'vue-router';
+import { Expand, Fold, Moon, Sunny } from '@element-plus/icons-vue';
+import { ElMessageBox } from 'element-plus';
+import { useAppStore } from '@/stores/app';
+import { usePermissionStore } from '@/stores/permission';
+import { useUserStore } from '@/stores/user';
+import { resetRouter } from '@/router';
 
-const app = useAppStore()
-const user = useUserStore()
-const permission = usePermissionStore()
-const route = useRoute()
-const router = useRouter()
+const app = useAppStore();
+const user = useUserStore();
+const permission = usePermissionStore();
+const route = useRoute();
+const router = useRouter();
 
 function toggleTheme(): void {
-  app.setTheme(app.theme === 'light' ? 'dark' : 'light')
+  app.setTheme(app.theme === 'light' ? 'dark' : 'light');
 }
 
 // 纯分组父级（无自身页面）点击时跳首页；其余跳自身路径
 function breadcrumbTo(m: (typeof route.matched)[number]): string {
-  if (m.redirect) return m.path
-  if (m.meta?.menuGroup) return '/home'
-  return m.path
+  if (m.redirect) return m.path;
+  if (m.meta?.menuGroup) return '/home';
+  return m.path;
 }
 
 async function handleLogout(): Promise<void> {
   try {
-    await ElMessageBox.confirm('确认退出登录？', '提示', { type: 'warning' })
+    await ElMessageBox.confirm('确认退出登录？', '提示', { type: 'warning' });
   } catch {
-    return
+    return;
   }
-  await user.logout()
-  resetRouter()
-  permission.reset()
-  router.push('/login')
+  await user.logout();
+  resetRouter();
+  permission.reset();
+  router.push('/login');
 }
 </script>
 

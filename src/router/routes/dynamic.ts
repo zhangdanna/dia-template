@@ -1,6 +1,6 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router';
 
-const DefaultLayout = () => import('@/layouts/default/index.vue')
+const DefaultLayout = () => import('@/layouts/default/index.vue');
 
 // 登录后按角色注入的动态路由（菜单由 permission store 过滤后生成）
 // 单页面用 index 子路由（path:''）+ meta.menuGroup 区分纯分组节点
@@ -51,4 +51,4 @@ export const dynamicRoutes: RouteRecordRaw[] = [
       },
     ],
   },
-]
+];

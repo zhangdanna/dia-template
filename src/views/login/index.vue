@@ -1,40 +1,45 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { Lock, User } from '@element-plus/icons-vue'
-import type { FormInstance, FormRules } from 'element-plus'
-import { usePermissionStore } from '@/stores/permission'
-import { useUserStore } from '@/stores/user'
-import { addDynamicRoutes } from '@/router'
-import { APP_TITLE } from '@/constants'
+import { reactive, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { Lock, User } from '@element-plus/icons-vue';
+import type { FormInstance, FormRules } from 'element-plus';
+import { usePermissionStore } from '@/stores/permission';
+import { useUserStore } from '@/stores/user';
+import { addDynamicRoutes } from '@/router';
+import { APP_TITLE } from '@/constants';
 
-const router = useRouter()
-const route = useRoute()
-const user = useUserStore()
-const permission = usePermissionStore()
+defineOptions({ name: 'LoginPage' });
 
-const formRef = ref<FormInstance>()
-const loading = ref(false)
-const form = reactive({ username: 'admin', password: '123456' })
+const router = useRouter();
+const route = useRoute();
+const user = useUserStore();
+const permission = usePermissionStore();
+
+const formRef = ref<FormInstance>();
+const loading = ref(false);
+const form = reactive({
+  username: import.meta.env.DEV ? 'admin' : '',
+  password: import.meta.env.DEV ? '123456' : '',
+});
 
 const rules: FormRules<typeof form> = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-}
+};
 
 async function handleLogin(): Promise<void> {
-  if (!formRef.value) return
-  await formRef.value.validate()
-  loading.value = true
+  if (!formRef.value) return;
+  await formRef.value.validate();
+  loading.value = true;
   try {
-    await user.login(form)
-    await user.fetchUserInfo()
-    const routes = permission.generateRoutes(user.roles)
-    addDynamicRoutes(routes)
-    const redirect = (route.query.redirect as string) || '/'
-    router.push(redirect)
+    await user.login(form);
+    await user.fetchUserInfo();
+    const routes = permission.generateRoutes(user.roles);
+    addDynamicRoutes(routes);
+    const redirect = (route.query.redirect as string) || '/';
+    router.push(redirect);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>

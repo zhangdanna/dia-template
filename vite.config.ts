@@ -1,11 +1,11 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig, loadEnv, type Plugin } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import UnoCSS from '@unocss/vite'
-import eslint from 'vite-plugin-eslint'
+import { defineConfig, loadEnv, type Plugin } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import UnoCSS from '@unocss/vite';
 
 // 开发环境内置 mock：拦截 /api/* 返回假数据，无需后端即可登录体验
 function mockApiPlugin(): Plugin {
@@ -13,55 +13,56 @@ function mockApiPlugin(): Plugin {
     name: 'dia-mock-api',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        if (!req.url?.startsWith('/api/')) return next()
-        const url = new URL(req.url, 'http://localhost')
-        const path = url.pathname
+        if (!req.url?.startsWith('/api/')) return next();
+        const url = new URL(req.url, 'http://localhost');
+        const path = url.pathname;
         const bodyText = await new Promise<string>((resolve) => {
-          let data = ''
+          let data = '';
           req.on('data', (c) => {
-            data += c.toString()
-          })
-          req.on('end', () => resolve(data))
-        })
-        const body = bodyText ? JSON.parse(bodyText) : {}
-        res.setHeader('Content-Type', 'application/json')
-        const ok = (data: unknown) => res.end(JSON.stringify({ code: 0, message: 'ok', data }))
+            data += c.toString();
+          });
+          req.on('end', () => resolve(data));
+        });
+        const body = bodyText ? JSON.parse(bodyText) : {};
+        res.setHeader('Content-Type', 'application/json');
+        const ok = (data: unknown) => res.end(JSON.stringify({ code: 0, message: 'ok', data }));
 
         if (path === '/api/auth/login' && req.method === 'POST') {
-          return ok({ token: `mock-token-${body.username ?? 'admin'}` })
+          return ok({ token: `mock-token-${body.username ?? 'admin'}` });
         }
         if (path === '/api/auth/userinfo' && req.method === 'GET') {
-          return ok({ id: 1, username: 'admin', roles: ['admin'], avatar: '' })
+          return ok({ id: 1, username: 'admin', roles: ['admin'], avatar: '' });
         }
         if (path === '/api/auth/logout' && req.method === 'POST') {
-          return ok(null)
+          return ok(null);
         }
-        res.statusCode = 404
-        res.end(JSON.stringify({ code: 404, message: 'mock not found', data: null }))
-      })
+        res.statusCode = 404;
+        res.end(JSON.stringify({ code: 404, message: 'mock not found', data: null }));
+      });
     },
-  }
+  };
 }
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const envDir = fileURLToPath(new URL('./config/env', import.meta.url))
-  const env = loadEnv(mode, envDir, '')
+  const envDir = fileURLToPath(new URL('./config/env', import.meta.url));
+  const env = loadEnv(mode, envDir, '');
 
   return {
     envDir,
     plugins: [
-      eslint(),
       vue(),
       UnoCSS(),
       AutoImport({
         imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
+        resolvers: [ElementPlusResolver()],
         dts: 'src/types/auto-imports.d.ts',
         vueTemplate: true,
       }),
       Components({
         dirs: ['src/components'],
         extensions: ['vue'],
+        resolvers: [ElementPlusResolver()],
         dts: 'src/types/components.d.ts',
       }),
       mockApiPlugin(),
@@ -94,12 +95,14 @@ export default defineConfig(({ mode }) => {
           chunkFileNames: 'assets/js/[name]-[hash].js',
           assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
           manualChunks(id) {
-            if (!id.includes('node_modules')) return
-            if (/[\\/]node_modules[\\/](vue|vue-router|pinia|@vue)[\\/]/.test(id)) return 'vue'
-            if (id.includes('element-plus') || id.includes('@element-plus')) return 'element'
+            if (!id.includes('node_modules')) return;
+            if (/[\\/]node_modules[\\/](vue|vue-router|pinia|@vue)[\\/]/.test(id)) return 'vue';
+            if (id.includes('element-plus') || id.includes('@element-plus')) return 'element';
+            if (id.includes('@vueuse')) return 'vueuse';
+            if (id.includes('axios')) return 'axios';
           },
         },
       },
     },
-  }
-})
+  };
+});

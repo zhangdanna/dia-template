@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router';
 
 export const staticRoutes: RouteRecordRaw[] = [
   {
@@ -29,4 +29,4 @@ export const staticRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/error/500.vue'),
     meta: { title: '服务器错误', hidden: true },
   },
-]
+];

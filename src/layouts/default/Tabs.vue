@@ -1,28 +1,30 @@
 <script setup lang="ts">
-import { watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { Close } from '@element-plus/icons-vue'
-import { useTabsStore } from '@/stores/tabs'
+import { watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { Close } from '@element-plus/icons-vue';
+import { useTabsStore } from '@/stores/tabs';
 
-const route = useRoute()
-const router = useRouter()
-const tabs = useTabsStore()
+const route = useRoute();
+const router = useRouter();
+const tabs = useTabsStore();
 
 watch(
   () => route.fullPath,
   () => tabs.addTab(route),
   { immediate: true },
-)
+);
 
 function clickTab(path: string): void {
-  router.push(path)
+  router.push(path);
 }
 
 function close(path: string): void {
-  const wasActive = route.path === path
-  tabs.removeTab(path)
+  const wasActive = route.path === path;
+  const name = router.resolve(path).name as string | undefined;
+  tabs.removeTab(path);
+  if (name) tabs.removeCachedView(name);
   if (wasActive && tabs.tabs.length) {
-    router.push(tabs.tabs[tabs.tabs.length - 1]!.path)
+    router.push(tabs.tabs[tabs.tabs.length - 1]!.path);
   }
 }
 </script>

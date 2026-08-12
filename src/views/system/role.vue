@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
+
+defineOptions({ name: 'SystemRole' });
 
 interface RoleRow {
-  id: number
-  name: string
-  key: string
-  desc: string
+  id: number;
+  name: string;
+  key: string;
+  desc: string;
 }
 
 const tableData = ref<RoleRow[]>([
   { id: 1, name: '超级管理员', key: 'admin', desc: '拥有全部权限' },
   { id: 2, name: '运营', key: 'operator', desc: '日常运营管理' },
   { id: 3, name: '财务', key: 'finance', desc: '财务相关权限' },
-])
+]);
 </script>
 
 <template>

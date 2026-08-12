@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { useAppStore } from '@/stores/app'
-import Sidebar from './Sidebar.vue'
-import Navbar from './Navbar.vue'
-import Tabs from './Tabs.vue'
+import { useAppStore } from '@/stores/app';
+import { useTabsStore } from '@/stores/tabs';
+import Sidebar from './Sidebar.vue';
+import Navbar from './Navbar.vue';
+import Tabs from './Tabs.vue';
 
-const app = useAppStore()
+const app = useAppStore();
+const tabsStore = useTabsStore();
 </script>
 
 <template>
@@ -19,7 +21,7 @@ const app = useAppStore()
       <Tabs />
       <el-main class="bg-[var(--app-content-bg)]">
         <router-view v-slot="{ Component }">
-          <keep-alive>
+          <keep-alive :include="tabsStore.cachedViews">
             <component :is="Component" />
           </keep-alive>
         </router-view>

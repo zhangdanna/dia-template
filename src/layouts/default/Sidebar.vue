@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { useAppStore } from '@/stores/app'
-import { usePermissionStore } from '@/stores/permission'
-import { APP_TITLE } from '@/constants'
-import SidebarItem from './SidebarItem.vue'
+import { useRoute } from 'vue-router';
+import { useAppStore } from '@/stores/app';
+import { usePermissionStore } from '@/stores/permission';
+import { APP_TITLE } from '@/constants';
+import SidebarItem from './SidebarItem.vue';
 
-const route = useRoute()
-const app = useAppStore()
-const permission = usePermissionStore()
+const route = useRoute();
+const app = useAppStore();
+const permission = usePermissionStore();
 </script>
 
 <template>

@@ -61,7 +61,7 @@ mkdir -p src/{types,styles,router/routes,stores,utils,api,constants,directives,l
 
 ### 5. 配置层
 
-- `vite.config.ts`：别名 `@/`、AutoImport、Components、UnoCSS、内联 Mock 插件、代理、分包
+- `vite.config.ts`：别名 `@/`、AutoImport（含 ElementPlusResolver）、Components（含 ElementPlusResolver，按需加载 EP 组件+指令）、UnoCSS、内联 Mock 插件、代理、分包
 - `tsconfig.app.json`：`@/*` 路径别名、严格模式
 - `uno.config.ts`、`.env.development`/`.env.production`、`.editorconfig`、`.npmrc`
 
@@ -151,7 +151,7 @@ src/
 - **静态路由**：登录页、错误页（403/404/500）。
 - **动态路由**：登录后按角色 `addRoute` 注入（见 `src/router/routes/dynamic.ts`）。
 - **路由守卫**：登录态校验、白名单、动态路由注入、标题、nprogress（`src/router/guard.ts`）。
-- **按钮级权限**：`v-permission` 指令或 `usePermission()` 组合式函数。
+- **按钮级权限**：`v-permission` 指令或 `useRoleCheck()` 组合式函数（`src/composables/useRoleCheck.ts`）。
 
 ### 请求层（`src/utils/request.ts`）
 
@@ -164,7 +164,7 @@ src/
 - `user`：Token / 用户信息 / 角色 / 登录登出。
 - `permission`：动态路由与菜单生成（按 roles 过滤）。
 - `app`：侧边栏折叠、主题（持久化）。
-- `tabs`：多标签页 + keep-alive。
+- `tabs`：多标签页 + keep-alive 缓存管理（`cachedViews` 仅缓存已打开标签，关闭标签自动清除缓存）。
 
 ### 主题
 
@@ -233,10 +233,20 @@ docker run -p 8080:80 dia-template
 
 ## 新增页面
 
-1. 在 `src/views/` 下新建组件。
-2. 在 `src/router/routes/dynamic.ts` 添加路由（含 `meta.title` / `meta.icon` / `meta.roles`）。
+1. 在 `src/views/` 下新建组件，添加 `defineOptions({ name: 'RouteName' })`（用于 keep-alive 缓存匹配）。
+2. 在 `src/router/routes/dynamic.ts` 添加路由（含 `meta.title` / `meta.icon` / `meta.roles`），`name` 需与 `defineOptions` 中的 `name` 一致。
 3. 菜单自动从 `permission.menus` 渲染。
 
 ## 新增接口
 
 在 `src/api/` 下按模块新建文件，调用 `request<T>({ url, method, data })`。
+
+## Element Plus 按需加载
+
+组件和指令通过 `unplugin-vue-components` 的 `ElementPlusResolver` 自动按需导入，**无需手动 import**。例如在模板中直接使用 `<el-button>`、`<el-table>`、`v-loading` 指令，插件会自动注册并加载对应样式。
+
+> 注意：`@element-plus/icons-vue` 仍需在使用处手动导入（如 `import { Lock } from '@element-plus/icons-vue'`），不在按需加载范围内。
+
+## 全局错误处理
+
+`main.ts` 配置了 `app.config.errorHandler`，所有未捕获的组件错误会打印到控制台，避免页面白屏崩溃。建议接入错误监控 SDK（如 Sentry）时替换此 handler。
