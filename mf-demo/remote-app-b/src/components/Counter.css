@@ -1,0 +1,36 @@
+.react-counter {
+  border: 2px solid #61dafb;
+  border-radius: 6px;
+  padding: 1rem;
+  background: #f0faff;
+}
+
+.react-counter h3 {
+  color: #21a1c9;
+  margin-bottom: 0.5rem;
+}
+
+.react-counter p {
+  margin: 0.25rem 0;
+}
+
+.counter-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.counter-actions button {
+  background: #61dafb;
+  color: #20232a;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.counter-actions button:hover {
+  background: #21a1c9;
+  color: white;
+}
